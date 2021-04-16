@@ -1,24 +1,16 @@
-version: '3.5'
+version: "3.4"
 
 services:
-  node:
-    build: .
-    restart: unless-stopped
-    depends_on:
-      - db
-    expose:
-      - 4567 # use a reverse proxy like Traefik
-
-  db:
-    image: mongo:bionic
-    restart: unless-stopped
-    expose:
-      - 27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+  nodebb-postgres:
+    image: postgres:9.6
+    ports:
+      - "5433:5432"
     volumes:
-      - mongo:/data/db
+      - nodebb-postgres-data:/var/lib/postgresql/nodebb-postgres-data
+    environment:
+      POSTGRES_PASSWORD: Darwin1859!
+      POSTGRES_USER: root
+      POSTGRES_DB: 1859-nodebb
 
 volumes:
-  mongo:
+  nodebb-postgres-data: {}
