@@ -5,9 +5,17 @@ const plugins = require('../plugins');
 const utils = require('../utils');
 
 const intFields = [
-	'uid', 'pid', 'tid', 'deleted', 'timestamp',
-	'upvotes', 'downvotes', 'deleterUid', 'edited',
-	'replies', 'bookmarks',
+	'uid',
+	'pid',
+	'tid',
+	'deleted',
+	'timestamp',
+	'upvotes',
+	'downvotes',
+	'deleterUid',
+	'edited',
+	'replies',
+	'bookmarks',
 ];
 
 module.exports = function (Posts) {
@@ -16,13 +24,19 @@ module.exports = function (Posts) {
 			return [];
 		}
 		const keys = pids.map(pid => 'post:' + pid);
-		const postData = await (fields.length ? db.getObjectsFields(keys, fields) : db.getObjects(keys));
+		const postData = await (fields.length ?
+			db.getObjectsFields(keys, fields) :
+			db.getObjects(keys));
 		const result = await plugins.hooks.fire('filter:post.getFields', {
 			pids: pids,
 			posts: postData,
 			fields: fields,
 		});
-		result.posts.forEach(post => modifyPost(post, fields));
+
+		const uniquePostAuthorNames = buildUniquePostAuthorNames(result.posts);
+
+		result.posts.forEach(post => modifyPost(post, fields, uniquePostAuthorNames)
+		);
 		return Array.isArray(result.posts) ? result.posts : null;
 	};
 
@@ -55,8 +69,26 @@ module.exports = function (Posts) {
 	};
 };
 
-function modifyPost(post, fields) {
+function convertNumberToOrdinal(n) {
+	const s = ['th', 'st', 'nd', 'rd'];
+	const v = n % 100;
+	return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function buildUniquePostAuthorNames(posts) {
+	return Array.from(new Set(posts.map(author => author.uid))).reduce(
+		(anonymizedAuthors, authorUid, index) => {
+			anonymizedAuthors[authorUid] = convertNumberToOrdinal(index + 1);
+			return anonymizedAuthors;
+		},
+		{}
+	);
+}
+
+function modifyPost(post, fields, authors) {
 	if (post) {
+		post.secretAuthorName = authors[post.uid];
+		console.log(post);
 		db.parseIntFields(post, intFields, fields);
 		if (post.hasOwnProperty('upvotes') && post.hasOwnProperty('downvotes')) {
 			post.votes = post.upvotes - post.downvotes;
