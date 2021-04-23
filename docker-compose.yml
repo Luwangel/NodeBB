@@ -6,7 +6,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - nodebb-postgres-data:/var/lib/postgresql/nodebb-postgres-data
+      - nodebb-postgres-data:/var
     environment:
       POSTGRES_PASSWORD: Darwin1859!
       POSTGRES_USER: root

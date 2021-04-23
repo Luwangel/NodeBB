@@ -8,8 +8,11 @@ help:
 start: ## Start the NodeBB server
 	./nodebb dev
 
-start-db: ## Start the NodeBB server
+start-db: ## Start the NodeBB database
 	docker-compose up -d
+
+stop-db: ## Stop the NodeBB database
+	docker-compose down
 
 logs: ## View server output
 	./nodebb log
