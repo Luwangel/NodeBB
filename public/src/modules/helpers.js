@@ -204,20 +204,20 @@
 
 	function renderTopicImage(topicObj) {
 		if (topicObj.thumb) {
-			return '<img src="' + topicObj.thumb + '" class="img-circle user-img" title="' + topicObj.user.username + '" />';
+			return '<img src="' + topicObj.thumb + '" class="img-circle user-img" />';
 		}
-		return '<img component="user/picture" data-uid="' + topicObj.user.uid + '" src="' + topicObj.user.picture + '" class="user-img" title="' + topicObj.user.username + '" />';
+		return '<img component="user/picture" data-uid="' + topicObj.user.uid + '" src="' + topicObj.user.picture + '" class="user-img" />';
 	}
 
 	function renderDigestAvatar(block) {
 		if (block.teaser) {
 			if (block.teaser.user.picture) {
-				return '<img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%;" src="' + block.teaser.user.picture + '" title="' + block.teaser.user.username + '" />';
+				return '<img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%;" src="' + block.teaser.user.picture + '" />';
 			}
 			return '<div style="vertical-align: middle; width: 32px; height: 32px; line-height: 32px; font-size: 16px; background-color: ' + block.teaser.user['icon:bgColor'] + '; color: white; text-align: center; display: inline-block; border-radius: 50%;">' + block.teaser.user['icon:text'] + '</div>';
 		}
 		if (block.user.picture) {
-			return '<img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%;" src="' + block.user.picture + '" title="' + block.user.username + '" />';
+			return '<img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%;" src="' + block.user.picture + '" />';
 		}
 		return '<div style="vertical-align: middle; width: 32px; height: 32px; line-height: 32px; font-size: 16px; background-color: ' + block.user['icon:bgColor'] + '; color: white; text-align: center; display: inline-block; border-radius: 50%;">' + block.user['icon:text'] + '</div>';
 	}
@@ -277,7 +277,7 @@
 	function buildAvatar(userObj, size, rounded, classNames, component) {
 		/**
 		 * userObj requires:
-		 *   - uid, picture, icon:bgColor, icon:text (getUserField w/ "picture" should return all 4), username
+		 *   - uid, picture, icon:bgColor, icon:text (getUserField w/ "picture" should return all 4)
 		 * size: one of "xs", "sm", "md", "lg", or "xl" (required), or an integer
 		 * rounded: true or false (optional, default false)
 		 * classNames: additional class names to prepend (optional, default none)
@@ -285,8 +285,6 @@
 		 */
 
 		var attributes = [
-			'alt="' + userObj.username + '"',
-			'title="' + userObj.username + '"',
 			'data-uid="' + userObj.uid + '"',
 			'loading="lazy"',
 		];
