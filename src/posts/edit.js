@@ -75,7 +75,7 @@ module.exports = function (Posts) {
 
 		await topics.notifyFollowers(returnPostData, data.uid, {
 			type: 'post-edit',
-			bodyShort: translator.compile('notifications:user_edited_post', editor.username, topic.title),
+			bodyShort: translator.compile('notifications:user_edited_post', 'Anonymous', topic.title),
 			nid: 'edit_post:' + data.pid + ':uid:' + data.uid,
 		});
 
