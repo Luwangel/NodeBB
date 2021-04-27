@@ -393,9 +393,11 @@ Notifications.merge = async function (notifications) {
 					titleEscaped = titleEscaped ? (', ' + titleEscaped) : '';
 
 					if (numUsers === 2) {
-						notifications[modifyIndex].bodyShort = '[[' + mergeId + '_dual, Anonymous' + titleEscaped + ']]';
+						notifications[modifyIndex].bodyShort = '[[' + mergeId + '_dual, Anonymous,' + titleEscaped + ']]';
 					} else if (numUsers > 2) {
 						notifications[modifyIndex].bodyShort = '[[' + mergeId + '_multiple, Anonymous, ' + (numUsers - 1) + titleEscaped + ']]';
+					} else {
+						notifications[modifyIndex].bodyShort = '[[' + mergeId + ', Anonymous, ' + titleEscaped + ']]';
 					}
 
 					notifications[modifyIndex].path = set[set.length - 1].path;

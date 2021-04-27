@@ -186,7 +186,7 @@ module.exports = function (Topics) {
 		if (parseInt(uid, 10) || meta.config.allowGuestReplyNotifications) {
 			Topics.notifyFollowers(postData, uid, {
 				type: 'new-reply',
-				bodyShort: translator.compile('notifications:user_posted_to', postData.user.username, postData.topic.title),
+				bodyShort: translator.compile('notifications:user_posted_to', 'Anonymous', postData.topic.title),
 				nid: 'new_post:tid:' + postData.topic.tid + ':pid:' + postData.pid + ':uid:' + uid,
 				mergeId: 'notifications:user_posted_to|' + postData.topic.tid,
 			});
@@ -221,7 +221,7 @@ module.exports = function (Topics) {
 		if (meta.config.allowGuestHandles && postData.uid === 0 && data.handle) {
 			postData.user.username = validator.escape(String(data.handle));
 		}
-
+		postData.user.username = 'Anonymous';
 		postData.votes = 0;
 		postData.bookmarked = false;
 		postData.display_edit_tools = true;
